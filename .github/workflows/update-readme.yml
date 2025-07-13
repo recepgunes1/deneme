@@ -46,36 +46,28 @@ jobs:
                   });
                 });
               } catch (error) {
-                console.log(`Skipping ${repo.name}: ${error.message}`);
+                console.log('Skipping ' + repo.name + ': ' + error.message);
               }
             }
             
             // Generate README content
-            let readmeContent = `# Hi there! 👋
-
-I'm passionate about open source and helping newcomers get started with coding.
-
-## 🌟 Good First Issues
-
-Here are some beginner-friendly issues from my projects:
-
-`;
+            let readmeContent = '# Hi there! 👋\n\n';
+            readmeContent += 'I\'m passionate about open source and helping newcomers get started with coding.\n\n';
+            readmeContent += '## 🌟 Good First Issues\n\n';
+            readmeContent += 'Here are some beginner-friendly issues from my projects:\n\n';
             
             if (goodFirstIssues.length > 0) {
               goodFirstIssues.slice(0, 10).forEach(issue => {
-                readmeContent += `- [${issue.title}](${issue.url}) - ${issue.repo}\n`;
+                readmeContent += '- [' + issue.title + '](' + issue.url + ') - ' + issue.repo + '\n';
               });
             } else {
-              readmeContent += `No good first issues available right now. Check back soon!\n`;
+              readmeContent += 'No good first issues available right now. Check back soon!\n';
             }
             
-            readmeContent += `
-## 📫 How to reach me
-- GitHub: [@HappyHackingSpace](https://github.com/HappyHackingSpace)
-
----
-*This README is automatically updated daily*
-`;
+            readmeContent += '\n## 📫 How to reach me\n';
+            readmeContent += '- GitHub: [@HappyHackingSpace](https://github.com/HappyHackingSpace)\n\n';
+            readmeContent += '---\n';
+            readmeContent += '*This README is automatically updated daily*\n';
             
             // Write to README.md
             fs.writeFileSync('README.md', readmeContent);

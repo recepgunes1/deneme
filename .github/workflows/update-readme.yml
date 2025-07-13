@@ -1,0 +1,89 @@
+# .github/workflows/update-readme.yml
+name: Update Good First Issues
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Daily update
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Fetch Good First Issues
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Get all repositories for the user
+            const repos = await github.rest.repos.listForUser({
+              username: 'HappyHackingSpace',
+              type: 'owner'
+            });
+            
+            let goodFirstIssues = [];
+            
+            // Search for good first issues in each repo
+            for (const repo of repos.data) {
+              try {
+                const issues = await github.rest.issues.listForRepo({
+                  owner: 'HappyHackingSpace',
+                  repo: repo.name,
+                  labels: 'good first issue',
+                  state: 'open',
+                  per_page: 5
+                });
+                
+                issues.data.forEach(issue => {
+                  goodFirstIssues.push({
+                    title: issue.title,
+                    url: issue.html_url,
+                    repo: repo.name,
+                    labels: issue.labels.map(label => label.name)
+                  });
+                });
+              } catch (error) {
+                console.log(`Skipping ${repo.name}: ${error.message}`);
+              }
+            }
+            
+            // Generate README content
+            let readmeContent = `# Hi there! 👋
+
+I'm passionate about open source and helping newcomers get started with coding.
+
+## 🌟 Good First Issues
+
+Here are some beginner-friendly issues from my projects:
+
+`;
+            
+            if (goodFirstIssues.length > 0) {
+              goodFirstIssues.slice(0, 10).forEach(issue => {
+                readmeContent += `- [${issue.title}](${issue.url}) - ${issue.repo}\n`;
+              });
+            } else {
+              readmeContent += `No good first issues available right now. Check back soon!\n`;
+            }
+            
+            readmeContent += `
+## 📫 How to reach me
+- GitHub: [@HappyHackingSpace](https://github.com/HappyHackingSpace)
+
+---
+*This README is automatically updated daily*
+`;
+            
+            // Write to README.md
+            fs.writeFileSync('README.md', readmeContent);
+            
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git diff --staged --quiet || git commit -m "Update good first issues"
+          git push

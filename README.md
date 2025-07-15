@@ -6,7 +6,7 @@ I'm passionate about open source and helping newcomers get started with coding.
 
 Here are some beginner-friendly issues from my projects:
 
-No good first issues available right now. Check back soon!
+- [Fix incorrect env var name in resume.py](https://github.com/HappyHackingSpace/resumeX/issues/4) - resumeX
 
 ## 📫 How to reach me
 - GitHub: [@HappyHackingSpace](https://github.com/HappyHackingSpace)

@@ -6,7 +6,7 @@ I'm passionate about open source and helping newcomers get started with coding.
 
 Here are some beginner-friendly issues from my projects:
 
-No good first issues available right now. Check back soon!
+- [auto merge dependabot bot PRs](https://github.com/HappyHackingSpace/site/issues/13) - site
 
 ## 📫 How to reach me
 - GitHub: [@HappyHackingSpace](https://github.com/HappyHackingSpace)
